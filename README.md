@@ -1,9 +1,9 @@
 # Streamix Video Streaming Platform
 
 ![Java](https://img.shields.io/badge/Java-21-007396?logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.5-6DB33F?logo=springboot&logoColor=white)
-![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2024.0.0-2C6EBE?logo=spring&logoColor=white)
-![Gradle](https://img.shields.io/badge/Gradle-8.14-4B6587?logo=gradle&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-6DB33F?logo=springboot&logoColor=white)
+![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.1.2-2C6EBE?logo=spring&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-9.5.1-4B6587?logo=gradle&logoColor=white)
 ![Status](https://img.shields.io/badge/status-in_progress-F5C910?label=Status)
 
 
@@ -224,7 +224,7 @@ sequenceDiagram
   participant User
   participant Client (SPA)
   participant Auth Service
-  participant Playback Context
+  participant Playback
   participant Rights Manager
   participant DRM
   participant CDN Orchestrator
@@ -233,22 +233,22 @@ sequenceDiagram
   User->>Client (SPA): Play
   Client (SPA)->>Auth Service: Validate session
   Auth Service-->>Client (SPA): Session OK
-  Client (SPA)->>Playback Context: Request playback
-  Playback Context->>Rights Manager: Check entitlements
-  Rights Manager-->>Playback Context: OK/Denied
-  Playback Context->>DRM: Get DRM token
-  DRM-->>Playback Context: DRM token
-  Playback Context->>CDN Orchestrator: Get CDN URL
-  CDN Orchestrator-->>Playback Context: CDN URL
-  Playback Context-->>Client (SPA): Playback Context config
+  Client (SPA)->>Playback: Request playback
+  Playback->>Rights Manager: Check entitlements
+  Rights Manager-->>Playback: OK/Denied
+  Playback->>DRM: Get DRM token
+  DRM-->>Playback: DRM token
+  Playback->>CDN Orchestrator: Get CDN URL
+  CDN Orchestrator-->>Playback: CDN URL
+  Playback-->>Client (SPA): Playback config
   Client (SPA)->>CDN: Stream request
   CDN-->>Client (SPA): Stream video
 
   loop Token expiry (every N minutes)
-    Client (SPA)->>Playback Context: Request new CDN token
-    Playback Context->>CDN Orchestrator: Get new CDN URL
-    CDN Orchestrator-->>Playback Context: New CDN URL
-    Playback Context-->>Client (SPA): New CDN token/URL
+    Client (SPA)->>Playback: Request new CDN token
+    Playback->>CDN Orchestrator: Get new CDN URL
+    CDN Orchestrator-->>Playback: New CDN URL
+    Playback-->>Client (SPA): New CDN token/URL
     Client (SPA)->>CDN: Continue streaming with new token
     CDN-->>Client (SPA): Continue streaming
   end
@@ -418,7 +418,7 @@ Manages all aspects of media management, including uploads, transcoding, DRM and
 
 Delivers streaming services, including content delivery, playback management and CDN integration.
 
-- **Playback Context Service** - `Planned`
+- **Playback Service** - `Planned`
 
     Builds real-time playback sessions, including entitlements, resume points and user settings.
 
@@ -644,7 +644,7 @@ Each microservice in this platform is designed to be containerised and deployed 
 
 Ensure you have the following installed on your machine:
 - [Java JDK 21](https://www.oracle.com/uk/java/technologies/downloads/#java21)
-- [Gradle 8.14](https://gradle.org/)
+- [Gradle 9.5.1](https://gradle.org/)
 - [Docker](https://docs.docker.com/get-started/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/)
 
